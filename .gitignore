@@ -12,6 +12,9 @@ build/
 # But keep schema files
 !schemas/**/*.json
 
+# Keep the Jest config (not build output)
+!jest.config.js
+
 # Test coverage
 coverage/
 .nyc_output/

@@ -5,6 +5,20 @@ All notable changes to mcptest will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- **Jest test suite**: Tier 1 unit tests covering the assertion engine, golden-file
+  comparison/fuzzy matching, scenario loading/validation, mcpdesc loading, version
+  validation, and scenario generation (48 tests). See
+  [docs/maintainers/test-plan.md](docs/maintainers/test-plan.md).
+
+### Fixed
+
+- **CI `jest: not found`**: Added `jest`, `ts-jest`, and `@types/jest` dev
+  dependencies and a `jest.config.js` (ESM-aware) so `npm test` runs in CI.
+
 ## [1.0.0-rc1] - 2026-06-25
 
 ### Initial open-source release
