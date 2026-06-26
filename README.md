@@ -122,7 +122,7 @@ mcptest run \
   --golden golden/
 ```
 
-Golden files automatically normalize non-deterministic values (timestamps → `<TIMESTAMP>`, UUIDs → `<UUID>`, numeric IDs → `<ID>`). Use `--incremental` to skip re-recording unchanged scenarios.
+Golden files automatically normalize non-deterministic values during comparison: ISO-8601 timestamps → `<TIMESTAMP>`, UUIDs → `<UUID>`, and `id`-like properties (e.g. `id`, `sessionId`, `user_id`) → `<ID>`. To ignore additional volatile fields, pass their names to `--fuzzy-match` when recording (e.g. `--fuzzy-match createdAt,requestId`); those fields are then ignored by name wherever they appear in the response, including nested objects and arrays. Use `--incremental` to skip re-recording unchanged scenarios.
 
 👉 [Execution Logs Workflow](docs/execution-logs-workflow.md)
 
@@ -167,7 +167,9 @@ Options:
   -g, --golden <path>      Golden files directory
   --export <path>          Export execution log for mcpmock integration
   -i, --incremental        Skip existing golden files
-  --fuzzy-match <fields>   Fields to normalize: timestamp,id,uuid
+  --fuzzy-match <fields>   Comma-separated field names to ignore during
+                           comparison (e.g. createdAt,requestId); the built-in
+                           timestamp / UUID / id rules always apply
   -e, --env <KEY=VALUE>    Environment variables (repeatable)
   -v, --verbose            Detailed logging
 ```

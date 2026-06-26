@@ -110,6 +110,69 @@ describe('GoldenFileManager', () => {
     expect(comparison.match).toBe(true);
   });
 
+  it('fuzzy-matches custom fields stored in the golden file', async () => {
+    await manager.save('s', 't', makeResult({ result: { token: 'abc', value: 1 } }), ['token']);
+    const comparison = await manager.compare('s', 't', makeResult({ result: { token: 'xyz', value: 1 } }));
+    expect(comparison.match).toBe(true);
+    expect(comparison.fuzzyMatched).toContain('token');
+  });
+
+  it('still fails when a non-fuzzy field differs', async () => {
+    await manager.save('s', 't', makeResult({ result: { token: 'abc', value: 1 } }), ['token']);
+    const comparison = await manager.compare('s', 't', makeResult({ result: { token: 'xyz', value: 2 } }));
+    expect(comparison.match).toBe(false);
+  });
+
+  it('fuzzy-matches numeric id-like keys in JSON when ignoreIds is set', async () => {
+    await manager.save('s', 't', makeResult({ result: { id: 123, sessionId: 1, name: 'x' } }));
+    const comparison = await manager.compare(
+      's',
+      't',
+      makeResult({ result: { id: 999, sessionId: 2, name: 'x' } }),
+      { ignoreIds: true }
+    );
+    expect(comparison.match).toBe(true);
+    expect(comparison.fuzzyMatched).toContain('ids');
+  });
+
+  it('fuzzy-matches custom fields nested inside arrays and objects', async () => {
+    await manager.save(
+      's',
+      't',
+      makeResult({ result: { items: [{ ts: 'a', keep: 1 }, { ts: 'b', keep: 2 }] } }),
+      ['ts']
+    );
+    const comparison = await manager.compare(
+      's',
+      't',
+      makeResult({ result: { items: [{ ts: 'x', keep: 1 }, { ts: 'y', keep: 2 }] } })
+    );
+    expect(comparison.match).toBe(true);
+  });
+
+  it('does not over-match keys that merely contain a fuzzy field name', async () => {
+    // `id` rule must not normalize `valid`, and key `name` must not affect `username`
+    await manager.save('s', 't', makeResult({ result: { valid: true, username: 'alice' } }), ['name']);
+    const comparison = await manager.compare(
+      's',
+      't',
+      makeResult({ result: { valid: true, username: 'bob' } }),
+      { ignoreIds: true }
+    );
+    expect(comparison.match).toBe(false);
+  });
+
+  it('uses customFields from FuzzyMatchOptions', async () => {
+    await manager.save('s', 't', makeResult({ result: { nonce: 'a', keep: 1 } }));
+    const comparison = await manager.compare(
+      's',
+      't',
+      makeResult({ result: { nonce: 'b', keep: 1 } }),
+      { customFields: ['nonce'] }
+    );
+    expect(comparison.match).toBe(true);
+  });
+
   it('sanitizes scenario and tool names into a safe file path', async () => {
     await manager.save('weird/name:1', 'tool name', makeResult());
     expect(manager.exists('weird/name:1', 'tool name')).toBe(true);

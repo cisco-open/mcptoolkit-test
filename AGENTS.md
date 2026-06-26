@@ -301,7 +301,7 @@ tools:
 
 **Format**: JSON with metadata (timestamp, version, fuzzy fields)
 
-**Comparison**: Exact match by default, fuzzy matching for timestamps/IDs
+**Comparison**: Exact match by default; structural fuzzy matching for timestamps, UUIDs, `id`-like keys, and custom fields named via `--fuzzy-match`
 
 **Updates**: `--update-golden` flag to refresh baselines
 

@@ -39,7 +39,7 @@ Principles:
 | Module | File | Coverage |
 |--------|------|----------|
 | `lib/test-executor.ts` (assertion engine) | `tests/unit/test-executor.test.ts` | All assertion types (`response-type`, `error`, `error-code`, `contains-text`, `array-length`, `array-length-max`), unknown type, non-string/non-array inputs, failure propagation, error capture — via a mocked `MCPTestClient`. |
-| `lib/golden-file-manager.ts` | `tests/unit/golden-file-manager.test.ts` | save/load/compare round-trip, value mismatch detection, missing/extra `error`, fuzzy matching (timestamps, UUIDs, numeric IDs, custom fields), filename sanitization, missing-golden behavior, `list`. |
+| `lib/golden-file-manager.ts` | `tests/unit/golden-file-manager.test.ts` | save/load/compare round-trip, value mismatch detection, missing/extra `error`, structural fuzzy matching (timestamps, UUIDs, numeric `id`-like keys, custom fields by name, nested/array fields, over-match safety, `customFields` option), filename sanitization, missing-golden behavior, `list`. |
 | `lib/scenario-loader.ts` | `tests/unit/scenario-loader.test.ts` | Schema validation, missing `name`/empty `tools` errors, malformed YAML, directory load skipping invalid files, empty-dir error. |
 | `lib/version-validator.ts` | `tests/unit/version-validator.test.ts` | Version match/mismatch, checksum match/mismatch, recommendation generation per failure mode. |
 | `lib/mcpdesc-loader.ts` | `tests/unit/mcpdesc-loader.test.ts` | Format auto-detection, JSON/YAML parsing, parse/read error wrapping, `rawContent` for checksums. |

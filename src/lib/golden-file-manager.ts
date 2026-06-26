@@ -11,6 +11,11 @@ import { resolve, join, dirname } from 'node:path';
 import { existsSync } from 'node:fs';
 import type { GoldenFile, ToolResult, ComparisonResult, Difference, FuzzyMatchOptions } from './types.js';
 
+/** ISO 8601 timestamp value, e.g. 2025-12-25T10:00:00Z or 2025-12-25T10:00:00.000Z */
+const TIMESTAMP_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z?$/;
+/** UUID value (any version) */
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 export class GoldenFileManager {
   constructor(private goldenDir: string) {}
 
@@ -101,27 +106,22 @@ export class GoldenFileManager {
       });
     }
 
-    // Compare results as JSON
+    // Compare results structurally, applying fuzzy rules on the parsed values
     const expectedJson = JSON.stringify(expected.result);
     const actualJson = JSON.stringify(actual.result);
 
     if (expectedJson !== actualJson) {
-      const textDiff = this.compareText(
-        expectedJson,
-        actualJson,
-        fuzzyFields,
-        options
-      );
-      
-      if (!textDiff.match) {
+      const fuzzy = this.compareValues(expected.result, actual.result, fuzzyFields, options);
+
+      if (!fuzzy.match) {
         differences.push({
           path: 'result',
           expected: expected.result,
           actual: actual.result,
           type: 'value-mismatch'
         });
-      } else if (textDiff.fuzzyMatched) {
-        fuzzyMatched.push(...textDiff.fuzzyMatched);
+      } else if (fuzzy.fuzzyMatched) {
+        fuzzyMatched.push(...fuzzy.fuzzyMatched);
       }
     }
 
@@ -161,89 +161,105 @@ export class GoldenFileManager {
   }
 
   /**
-   * Compare text with fuzzy matching
+   * Compare two result values structurally, applying fuzzy rules.
+   *
+   * Fuzzy matching operates on the parsed structure (not serialized text):
+   * - Built-in `ignoreTimestamps` / `ignoreIds` (or the `timestamp` / `id`
+   *   keywords in `fuzzyFields`) normalize ISO timestamps, UUIDs, and `id`-like
+   *   properties by value/key.
+   * - Any other entry in `fuzzyFields` (or `options.customFields`) is treated as
+   *   a property name whose value is ignored wherever it appears in the result.
    */
-  private compareText(
-    expected: string,
-    actual: string,
+  private compareValues(
+    expected: unknown,
+    actual: unknown,
     fuzzyFields?: string[],
     options?: FuzzyMatchOptions
   ): { match: boolean; fuzzyMatched?: string[] } {
-    // Exact match
-    if (expected === actual) {
-      return { match: true };
-    }
+    // Reserved keywords keep their historical meaning: enabling timestamp/id rules.
+    const ignoreTimestamps = Boolean(options?.ignoreTimestamps || fuzzyFields?.includes('timestamp'));
+    const ignoreIds = Boolean(options?.ignoreIds || fuzzyFields?.includes('id'));
 
-    const fuzzyMatched: string[] = [];
-
-    // Fuzzy timestamp matching
-    if (options?.ignoreTimestamps || fuzzyFields?.includes('timestamp')) {
-      const expNormalized = this.normalizeTimestamps(expected);
-      const actNormalized = this.normalizeTimestamps(actual);
-      if (expNormalized === actNormalized) {
-        fuzzyMatched.push('timestamps');
-        return { match: true, fuzzyMatched };
+    const customFields = new Set<string>();
+    for (const field of fuzzyFields || []) {
+      if (field !== 'timestamp' && field !== 'id') {
+        customFields.add(field);
       }
     }
-
-    // Fuzzy ID matching
-    if (options?.ignoreIds || fuzzyFields?.includes('id')) {
-      const expNormalized = this.normalizeIds(expected);
-      const actNormalized = this.normalizeIds(actual);
-      if (expNormalized === actNormalized) {
-        fuzzyMatched.push('ids');
-        return { match: true, fuzzyMatched };
-      }
+    for (const field of options?.customFields || []) {
+      customFields.add(field);
     }
 
-    // Custom fuzzy fields
-    if (fuzzyFields && fuzzyFields.length > 0) {
-      let expText = expected;
-      let actText = actual;
-      
-      for (const field of fuzzyFields) {
-        if (field !== 'timestamp' && field !== 'id') {
-          // Try to normalize custom fields
-          expText = this.normalizeCustomField(expText, field);
-          actText = this.normalizeCustomField(actText, field);
-        }
-      }
-      
-      if (expText === actText) {
-        fuzzyMatched.push(...fuzzyFields);
-        return { match: true, fuzzyMatched };
-      }
-    }
+    const applied = new Set<string>();
+    const rules = { ignoreTimestamps, ignoreIds, customFields };
 
-    return { match: false };
+    const normExpected = this.normalizeValue(expected, rules, applied);
+    const normActual = this.normalizeValue(actual, rules, applied);
+
+    const match = JSON.stringify(normExpected) === JSON.stringify(normActual);
+    if (match && applied.size > 0) {
+      return { match: true, fuzzyMatched: [...applied] };
+    }
+    return { match };
   }
 
   /**
-   * Normalize timestamps in text (replace with placeholder)
+   * Recursively normalize a value for fuzzy comparison, replacing volatile
+   * fields with stable placeholders. Records which fuzzy categories/fields were
+   * applied in `applied`.
    */
-  private normalizeTimestamps(text: string): string {
-    // ISO 8601 format: 2025-12-25T10:00:00Z or 2025-12-25T10:00:00.000Z
-    return text.replace(/\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{3})?Z?/g, '<TIMESTAMP>');
+  private normalizeValue(
+    value: unknown,
+    rules: { ignoreTimestamps: boolean; ignoreIds: boolean; customFields: Set<string> },
+    applied: Set<string>,
+    key?: string
+  ): unknown {
+    // Key-based rules: ignore the entire value regardless of its type.
+    if (key !== undefined) {
+      if (rules.customFields.has(key)) {
+        applied.add(key);
+        return '<FUZZY>';
+      }
+      if (rules.ignoreIds && this.isIdKey(key)) {
+        applied.add('ids');
+        return '<ID>';
+      }
+    }
+
+    // Value-pattern rules for string leaves.
+    if (typeof value === 'string') {
+      if (rules.ignoreIds && UUID_PATTERN.test(value)) {
+        applied.add('ids');
+        return '<UUID>';
+      }
+      if (rules.ignoreTimestamps && TIMESTAMP_PATTERN.test(value)) {
+        applied.add('timestamps');
+        return '<TIMESTAMP>';
+      }
+      return value;
+    }
+
+    if (Array.isArray(value)) {
+      return value.map((item) => this.normalizeValue(item, rules, applied));
+    }
+
+    if (value !== null && typeof value === 'object') {
+      const out: Record<string, unknown> = {};
+      for (const [k, v] of Object.entries(value)) {
+        out[k] = this.normalizeValue(v, rules, applied, k);
+      }
+      return out;
+    }
+
+    return value;
   }
 
   /**
-   * Normalize IDs in text (replace with placeholder)
+   * Determine whether a property key represents an identifier (e.g. `id`,
+   * `sessionId`, `user_id`). Avoids false positives like `valid` or `paid`.
    */
-  private normalizeIds(text: string): string {
-    // UUID format
-    let normalized = text.replace(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/gi, '<UUID>');
-    // Numeric IDs (e.g., "id: 12345" or "ID: 67890")
-    normalized = normalized.replace(/\bid[:\s]+\d+/gi, 'id: <ID>');
-    return normalized;
-  }
-
-  /**
-   * Normalize custom fields (simple pattern replacement)
-   */
-  private normalizeCustomField(text: string, field: string): string {
-    // Replace "field: value" patterns with "field: <VALUE>"
-    const regex = new RegExp(`${field}[:\\s]+[^\\s,}]+`, 'gi');
-    return text.replace(regex, `${field}: <VALUE>`);
+  private isIdKey(key: string): boolean {
+    return key.toLowerCase() === 'id' || /[a-z0-9]Id$/.test(key) || /_id$/i.test(key);
   }
 
   /**

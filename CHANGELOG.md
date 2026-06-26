@@ -16,6 +16,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **Golden-file fuzzy matching now operates on parsed structure instead of
+  serialized JSON text.** Custom `--fuzzy-match` field names and numeric `id`
+  values are now correctly ignored during comparison (previously silent no-ops
+  on JSON results), `FuzzyMatchOptions.customFields` is honored, and field-name
+  matching no longer over-matches unrelated keys (e.g. `name` vs `username`) or
+  break on regex-special characters.
 - **CI `jest: not found`**: Added `jest`, `ts-jest`, and `@types/jest` dev
   dependencies and a `jest.config.js` (ESM-aware) so `npm test` runs in CI.
 

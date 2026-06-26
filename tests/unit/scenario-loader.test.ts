@@ -5,6 +5,7 @@
 import { mkdtemp, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { jest } from '@jest/globals';
 import { ScenarioLoader } from '../../src/lib/scenario-loader.js';
 import { ScenarioValidationError } from '../../src/lib/types.js';
 
@@ -81,18 +82,22 @@ describe('ScenarioLoader', () => {
   });
 
   it('skips invalid files but keeps valid ones in a directory', async () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     await writeFile(join(dir, 'good.yaml'), VALID_SCENARIO, 'utf-8');
     await writeFile(join(dir, 'bad.yaml'), 'name: "x"\ntools: []\n', 'utf-8');
 
     const scenarios = await loader.loadScenarios(dir);
     expect(scenarios).toHaveLength(1);
     expect(scenarios[0].name).toBe('query_games - basic test');
+    errorSpy.mockRestore();
   });
 
   it('throws when a directory has no valid scenarios', async () => {
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     await writeFile(join(dir, 'bad.yaml'), 'name: "x"\ntools: []\n', 'utf-8');
 
     await expect(loader.loadScenarios(dir)).rejects.toBeInstanceOf(ScenarioValidationError);
+    errorSpy.mockRestore();
   });
 
   it('loads a single file via loadScenarios', async () => {
