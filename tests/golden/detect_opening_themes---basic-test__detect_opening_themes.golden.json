@@ -1,0 +1,14 @@
+{
+  "scenarioName": "detect_opening_themes - basic test",
+  "toolName": "detect_opening_themes",
+  "recordedAt": "2025-12-28T17:33:45.636Z",
+  "response": {
+    "toolName": "detect_opening_themes",
+    "success": true,
+    "duration": 4,
+    "result": "No opening-specific weakness patterns detected."
+  },
+  "metadata": {
+    "mcptestVersion": "0.4.0"
+  }
+}

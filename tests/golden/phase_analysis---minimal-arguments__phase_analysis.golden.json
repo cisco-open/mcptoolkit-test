@@ -1,0 +1,14 @@
+{
+  "scenarioName": "phase_analysis - minimal arguments",
+  "toolName": "phase_analysis",
+  "recordedAt": "2025-12-28T17:33:49.443Z",
+  "response": {
+    "toolName": "phase_analysis",
+    "success": true,
+    "duration": 15,
+    "result": "=== Phase-Level Strength Analysis ===\n\nGames Analyzed: 737\n\nExcellent Move Rate by Phase:\n\nOpening:    43.9% (based on 737 games)\nMiddlegame: 36.1% (based on 733 games)\nEndgame:    28.2% (based on 678 games)\n\nPhase Ranking:\n🥇 1. Opening: 43.9%\n🥈 2. Middlegame: 36.1%\n🥉 3. Endgame: 28.2%\n\n✨ Strong opening preparation!\n✨ Excellent middlegame tactical awareness!\n"
+  },
+  "metadata": {
+    "mcptestVersion": "0.4.0"
+  }
+}

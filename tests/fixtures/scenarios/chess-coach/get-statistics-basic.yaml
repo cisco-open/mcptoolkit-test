@@ -1,0 +1,10 @@
+name: "get_statistics - basic stats"
+description: "Verify get_statistics returns player statistics"
+tools:
+  - name: "get_statistics"
+    arguments: {}
+    assertions:
+      - type: "response-type"
+        expected: "string"
+      - type: "contains-text"
+        expected: "games"

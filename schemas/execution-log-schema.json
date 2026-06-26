@@ -1,0 +1,167 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mcptest.dev/schema/execution-log/v1",
+  "title": "MCP Test Execution Log",
+  "description": "Record of test executions against an MCP server, used for mock data generation and version tracking",
+  "type": "object",
+  "required": ["version", "schema", "recordedAt", "metadata", "executions"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "description": "Execution log format version",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "examples": ["1.0.0"]
+    },
+    "schema": {
+      "type": "string",
+
+      "description": "JSON Schema URI for this execution log format",
+      "const": "https://mcptest.dev/schema/execution-log/v1"
+    },
+    "recordedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this execution log was created"
+    },
+    "metadata": {
+      "type": "object",
+      "required": ["mcptestVersion", "mcpdescVersion", "mcpdescFile", "serverInfo"],
+      "properties": {
+        "mcptestVersion": {
+          "type": "string",
+          "description": "Version of mcptest used to record this execution log",
+          "examples": ["0.10.0"]
+        },
+        "mcpdescVersion": {
+          "type": "string",
+          "description": "Version of the mcpdesc file this execution log is based on",
+          "examples": ["0.6.0"]
+        },
+        "mcpdescFile": {
+          "type": "string",
+          "description": "Relative or absolute path to the mcpdesc file",
+          "examples": ["mcpdesc/chess-coach-v0.4.0.mcpdesc.json"]
+        },
+        "mcpdescChecksum": {
+          "type": "string",
+          "description": "SHA-256 checksum of the mcpdesc file for validation (optional but recommended)",
+          "pattern": "^sha256:[a-f0-9]{64}$",
+          "examples": ["sha256:abc123..."]
+        },
+        "serverInfo": {
+          "type": "object",
+          "required": ["name", "version"],
+          "properties": {
+            "name": {
+              "type": "string",
+              "description": "MCP server name"
+            },
+            "version": {
+              "type": "string",
+              "description": "MCP server version"
+            }
+          }
+        },
+        "serverUrl": {
+          "type": "string",
+          "description": "URL of the MCP server used for recording (optional)",
+          "examples": ["http://localhost:8000", "stdio://python?args=-m,chess_coach.mcp_server"]
+        },
+        "transport": {
+          "type": "string",
+          "enum": ["stdio", "streamable-http", "sse"],
+          "description": "MCP transport type used for recording"
+        },
+        "previousVersions": {
+          "type": "array",
+          "description": "History of previous mcpdesc versions merged into this execution log",
+          "items": {
+            "type": "object",
+            "required": ["mcpdescVersion", "recordedAt"],
+            "properties": {
+              "mcpdescVersion": {
+                "type": "string",
+                "description": "Previous mcpdesc version"
+              },
+              "recordedAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When this version was recorded"
+              },
+              "executionCount": {
+                "type": "integer",
+                "description": "Number of executions from this version",
+                "minimum": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    "executions": {
+      "type": "array",
+      "description": "Array of test executions recorded against the MCP server",
+      "items": {
+        "type": "object",
+        "required": ["scenarioName", "toolName", "arguments", "response", "timestamp"],
+        "properties": {
+          "scenarioName": {
+            "type": "string",
+            "description": "Name of the test scenario that was executed"
+          },
+          "toolName": {
+            "type": "string",
+            "description": "Name of the MCP tool that was called"
+          },
+          "arguments": {
+            "type": "object",
+            "description": "Arguments passed to the tool (can be any valid JSON object)",
+            "additionalProperties": true
+          },
+          "response": {
+            "type": "object",
+            "required": ["success"],
+            "properties": {
+              "success": {
+                "type": "boolean",
+                "description": "Whether the tool call succeeded"
+              },
+              "result": {
+                "description": "Tool result (can be any JSON value: string, number, boolean, object, array, or null)"
+              },
+              "duration": {
+                "type": "integer",
+                "description": "Execution duration in milliseconds",
+                "minimum": 0
+              },
+              "error": {
+                "type": "object",
+                "description": "Error details (present only if success=false)",
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "description": "Error code"
+                  },
+                  "message": {
+                    "type": "string",
+                    "description": "Error message"
+                  }
+                }
+              }
+            }
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 timestamp when this execution occurred"
+          },
+          "executionHash": {
+            "type": "string",
+            "description": "Hash of toolName + arguments for deduplication (optional)",
+            "pattern": "^[a-f0-9]{64}$"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+name: "query_games - basic query"
+description: "Verify query_games returns games without filters"
+tools:
+  - name: "query_games"
+    arguments:
+      limit: 5
+    assertions:
+      - type: "response-type"
+        expected: "string"
+      - type: "contains-text"
+        expected: "Found"

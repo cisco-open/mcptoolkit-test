@@ -1,0 +1,14 @@
+{
+  "scenarioName": "query_games - basic test",
+  "toolName": "query_games",
+  "recordedAt": "2025-12-28T17:33:49.451Z",
+  "response": {
+    "toolName": "query_games",
+    "success": true,
+    "duration": 7,
+    "result": "No games found matching the criteria."
+  },
+  "metadata": {
+    "mcptestVersion": "0.4.0"
+  }
+}

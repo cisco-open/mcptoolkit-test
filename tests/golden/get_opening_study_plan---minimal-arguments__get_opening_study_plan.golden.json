@@ -1,0 +1,14 @@
+{
+  "scenarioName": "get_opening_study_plan - minimal arguments",
+  "toolName": "get_opening_study_plan",
+  "recordedAt": "2025-12-28T17:33:49.383Z",
+  "response": {
+    "toolName": "get_opening_study_plan",
+    "success": true,
+    "duration": 12,
+    "result": "**Opening Study Plan** (5 openings)\n\nBased on 247 games, 42.7% average win rate\n\n| # | Opening | Games | Win% | CP | Action | Priority |\n|---|---------|-------|------|----|---------|---------|\n| 1 | French Defense | 24 | 38% | 178 | ⚠️ REVIEW | 100 |\n| 2 | Sicilian Defense: Old Sic... | 18 | 36% | 221 | ⚠️ REVIEW | 97 |\n| 3 | Caro-Kann Defense | 27 | 46% | 143 | 📚 IMPROVE | 90 |\n| 4 | Indian Game | 102 | 46% | 206 | 📚 IMPROVE | 90 |\n| 5 | King's Pawn Opening | 76 | 47% | 189 | 📚 IMPROVE | 90 |\n\n\n**Detailed Study Focus:**\n\n1. **French Defense** (24 games, 37.5%)\n   - Action: REVIEW\n   - Focus: Review opening principles - making too many mistakes | Study typical middlegame plans from this opening | Fix: Slow Piece Development, Weakening King-Side Pawns\n   - Weaknesses: Slow Piece Development, Weakening King-Side Pawns\n\n2. **Sicilian Defense: Old Sicilian** (18 games, 36.1%)\n   - Action: REVIEW\n   - Focus: Review opening principles - making too many mistakes | Study typical middlegame plans from this opening | Fix: Slow Piece Development, Weakening King-Side Pawns\n   - Weaknesses: Slow Piece Development, Weakening King-Side Pawns\n\n3. **Caro-Kann Defense** (27 games, 46.3%)\n   - Action: IMPROVE\n   - Focus: Practice opening tactics and common patterns | Work on: Slow Piece Development | Review main line variations\n   - Weaknesses: Slow Piece Development, Weakening King-Side Pawns\n\n4. **Indian Game** (102 games, 46.1%)\n   - Action: IMPROVE\n   - Focus: Practice opening tactics and common patterns | Work on: Slow Piece Development | Review main line variations\n   - Weaknesses: Slow Piece Development, Weakening King-Side Pawns\n\n5. **King's Pawn Opening** (76 games, 47.4%)\n   - Action: IMPROVE\n   - Focus: Practice opening tactics and common patterns | Work on: Slow Piece Development | Review main line variations\n   - Weaknesses: Slow Piece Development, Weakening King-Side Pawns\n\n**Recommendation Summary:**\n- 📚 IMPROVE: 3 opening(s) - decent but needs work\n- ⚠️ REVIEW: 2 opening(s) - poor results, needs major study\n\n**Next Steps:**\n1. Focus on #1: French Defense (highest priority)\n2. Review opening principles - making too many mistakes | Study typical middlegame plans from this opening | Fix: Slow Piece Development, Weakening King-Side Pawns\n"
+  },
+  "metadata": {
+    "mcptestVersion": "0.4.0"
+  }
+}

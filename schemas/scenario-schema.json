@@ -1,0 +1,123 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/cisco-open/mcptoolkit-test/blob/main/schemas/scenario-schema.json",
+  "title": "MCP Test Scenario",
+  "description": "Schema for mcptest YAML test scenarios",
+  "type": "object",
+  "required": ["name", "tools"],
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Scenario name"
+    },
+    "description": {
+      "type": "string",
+      "description": "Optional scenario description"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Tags for organizing scenarios"
+    },
+    "tools": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/definitions/toolCall"
+      },
+      "description": "Tool calls to execute"
+    },
+    "mockOverride": {
+      "$ref": "#/definitions/mockOverride",
+      "description": "Override response for mock testing"
+    }
+  },
+  "definitions": {
+    "toolCall": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Tool name"
+        },
+        "arguments": {
+          "type": "object",
+          "description": "Tool arguments"
+        },
+        "assertions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/assertion"
+          },
+          "description": "Assertions to validate response"
+        }
+      }
+    },
+    "assertion": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "response-type",
+            "error",
+            "contains-text",
+            "golden-file",
+            "json-schema",
+            "custom",
+            "array-length",
+            "array-length-max",
+            "error-code"
+          ],
+          "description": "Assertion type"
+        },
+        "expected": {
+          "description": "Expected value"
+        },
+        "schema": {
+          "type": "object",
+          "description": "JSON Schema for validation"
+        },
+        "expression": {
+          "type": "string",
+          "description": "Custom JavaScript expression"
+        }
+      }
+    },
+    "mockOverride": {
+      "type": "object",
+      "required": ["toolName", "response"],
+      "properties": {
+        "toolName": {
+          "type": "string",
+          "description": "Tool to override"
+        },
+        "response": {
+          "type": "object",
+          "required": ["content"],
+          "properties": {
+            "content": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["type"],
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "text": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

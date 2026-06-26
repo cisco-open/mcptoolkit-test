@@ -1,0 +1,14 @@
+{
+  "scenarioName": "analyze_opening - minimal arguments",
+  "toolName": "analyze_opening",
+  "recordedAt": "2025-12-28T17:33:45.631Z",
+  "response": {
+    "toolName": "analyze_opening",
+    "success": true,
+    "duration": 4,
+    "result": "No data found for opening: test"
+  },
+  "metadata": {
+    "mcptestVersion": "0.4.0"
+  }
+}

@@ -1,0 +1,11 @@
+name: "detect_themes - basic detection"
+description: "Verify detect_themes returns theme patterns"
+tools:
+  - name: "detect_themes"
+    arguments:
+      min_occurrences: 3
+    assertions:
+      - type: "response-type"
+        expected: "string"
+      - type: "contains-text"
+        expected: "themes"

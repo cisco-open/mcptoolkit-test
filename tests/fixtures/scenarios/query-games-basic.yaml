@@ -1,0 +1,11 @@
+name: "query_games - basic test"
+description: "Verify query_games returns games without filters"
+tools:
+  - name: "query_games"
+    arguments:
+      limit: 5
+    assertions:
+      - type: "response-type"
+        expected: "array"
+      - type: "array-length-max"
+        expected: 5

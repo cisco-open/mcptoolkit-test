@@ -1,0 +1,14 @@
+{
+  "scenarioName": "get_theme_history - basic test",
+  "toolName": "get_theme_history",
+  "recordedAt": "2025-12-28T17:33:49.399Z",
+  "response": {
+    "toolName": "get_theme_history",
+    "success": true,
+    "duration": 2,
+    "result": "Error executing get_theme_history: 'TrainingAPI' object has no attribute 'db'"
+  },
+  "metadata": {
+    "mcptestVersion": "0.4.0"
+  }
+}

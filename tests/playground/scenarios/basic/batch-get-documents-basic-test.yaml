@@ -1,0 +1,11 @@
+name: batch_get_documents - basic test
+description: Verify batch_get_documents returns documents for given names
+tools:
+  - name: batch_get_documents
+    arguments:
+      names:
+        - "documents/cloud.google.com/storage/docs/creating-buckets"
+        - "documents/firebase.google.com/docs/web/setup"
+    assertions:
+      - type: response-type
+        expected: object

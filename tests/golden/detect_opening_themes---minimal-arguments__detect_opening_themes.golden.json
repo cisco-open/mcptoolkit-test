@@ -1,0 +1,14 @@
+{
+  "scenarioName": "detect_opening_themes - minimal arguments",
+  "toolName": "detect_opening_themes",
+  "recordedAt": "2025-12-28T17:33:49.199Z",
+  "response": {
+    "toolName": "detect_opening_themes",
+    "success": true,
+    "duration": 3561,
+    "result": "**Opening-Specific Weaknesses** (4 patterns)\n\n**Development Issues:**\n- **Slow Piece Development**: 323 occurrences (Priority: 10)\n  Not developing enough minor pieces (knights and bishops) in the first 8 moves. Development is crucia...\n- **Early Queen Development**: 22 occurrences (Priority: 9)\n  Moving the queen too early in the opening (before developing minor pieces). This often leads to the ...\n\n**King Safety Issues:**\n- **Weakening King-Side Pawns**: 145 occurrences (Priority: 10)\n  Moving pawns near the king in the opening before castling. This creates weaknesses that opponents ca...\n- **Early King Moves**: 31 occurrences (Priority: 10)\n  Moving the king in the opening instead of castling. This weakens king safety and makes it harder to ...\n\n**Next Steps:**\n1. Focus on fixing: Slow Piece Development\n2. Review opening principles for this weakness\n3. Practice games focusing on avoiding this pattern\n"
+  },
+  "metadata": {
+    "mcptestVersion": "0.4.0"
+  }
+}

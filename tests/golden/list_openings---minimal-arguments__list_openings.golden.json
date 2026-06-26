@@ -1,0 +1,14 @@
+{
+  "scenarioName": "list_openings - minimal arguments",
+  "toolName": "list_openings",
+  "recordedAt": "2025-12-28T17:32:35.306Z",
+  "response": {
+    "toolName": "list_openings",
+    "success": true,
+    "duration": 73,
+    "result": "Opening Repertoire (20 openings)\nMinimum 3 games\n\n| Opening | ECO | Color | Games | Win Rate | Avg CP Loss | Mistake % |\n|---------|-----|-------|-------|----------|-------------|----------|\n| Caro-Kann Defense              | B10 | black |   172 |   57.6% |       136.6 |        5% |\n| Indian Game                    | A45 | black |   102 |   46.1% |       205.7 |        4% |\n| King's Pawn Opening            | B00 | white |    76 |   47.4% |       188.8 |       20% |\n| Italian Game: Giuoco Piano     | C50 | white |    35 |   57.1% |       182.2 |        0% |\n| Italian Game                   | C50 | white |    28 |   50.0% |       297.7 |        4% |\n| Caro-Kann Defense              | B10 | white |    27 |   46.3% |       143.0 |        4% |\n| Italian Game: Two Knights D... | C55 | white |    27 |   51.9% |       163.5 |        7% |\n| French Defense                 | C00 | white |    24 |   37.5% |       177.8 |        8% |\n| Open Game                      | C20 | white |    19 |   65.8% |       333.0 |       26% |\n| Caro-Kann Defense: Exchange... | B13 | black |    18 |   61.1% |        81.9 |        0% |\n| Caro-Kann Defense: Exchange... | B13 | white |    18 |   63.9% |       171.9 |        6% |\n| Sicilian Defense: Old Sicilian | B30 | white |    18 |   36.1% |       220.9 |       11% |\n| Pirc Defense                   | B07 | white |    16 |   46.9% |       196.9 |        0% |\n| Sicilian Defense: Modern Va... | B50 | white |    16 |   46.9% |        96.9 |        6% |\n| Modern Defense                 | B06 | white |    15 |   46.7% |       134.2 |       13% |\n| Petrov Defense                 | C42 | white |    13 |   65.4% |       161.9 |       38% |\n| Sicilian Defense: French Va... | B40 | white |    13 |   30.8% |       128.4 |        8% |\n| Caro-Kann Defense: Two Knig... | B11 | black |    12 |   50.0% |       416.7 |        0% |\n| French Defense: Exchange Va... | C01 | white |     9 |   44.4% |        62.2 |        0% |\n| Réti Opening                   | A06 | black |     9 |   33.3% |       374.0 |       22% |\n\n\n**Insights:**\n\n- **Best opening:** Open Game (65.8% win rate, 19 games)\n- **Needs work:** Sicilian Defense: French Variation (30.8% win rate, 13 games)\n- **Total openings:** 20\n\n**⚠️ Openings with high mistake rates (>30%):**\n  - Petrov Defense: 38% mistake rate\n"
+  },
+  "metadata": {
+    "mcptestVersion": "0.4.0"
+  }
+}

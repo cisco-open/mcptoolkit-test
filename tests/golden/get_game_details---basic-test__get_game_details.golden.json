@@ -1,0 +1,14 @@
+{
+  "scenarioName": "get_game_details - basic test",
+  "toolName": "get_game_details",
+  "recordedAt": "2025-12-28T17:33:49.343Z",
+  "response": {
+    "toolName": "get_game_details",
+    "success": true,
+    "duration": 10,
+    "result": "Game #10 Details:\n\nDate: 2025-12-22T00:00:00\nPlatform: chess.com\nPlayer Color: black\nPlayer Rating: 979\nOpponent Rating: 973\nResult: loss\nTime Control: bullet\n\nAnalysis: ✓ Completed\nMoves: 57\nBlunders: 0\nMistakes: 2\nInaccuracies: 3\nAverage Centipawn Loss: 28.8\n"
+  },
+  "metadata": {
+    "mcptestVersion": "0.4.0"
+  }
+}

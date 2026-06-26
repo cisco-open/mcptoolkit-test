@@ -1,0 +1,9 @@
+name: get_document - basic test
+description: Verify get_document returns a document by name
+tools:
+  - name: get_document
+    arguments:
+      name: "documents/cloud.google.com/storage/docs/creating-buckets"
+    assertions:
+      - type: response-type
+        expected: object

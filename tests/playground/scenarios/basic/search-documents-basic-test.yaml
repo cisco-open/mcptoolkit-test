@@ -1,0 +1,11 @@
+name: search_documents - basic test
+description: Verify search_documents returns search results for a query
+tools:
+  - name: search_documents
+    arguments:
+      query: "How to create a Cloud Storage bucket?"
+    assertions:
+      - type: response-type
+        expected: object
+      - type: contains-text
+        expected: results

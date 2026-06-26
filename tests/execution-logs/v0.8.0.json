@@ -1,0 +1,36 @@
+{
+  "version": "1.0.0",
+  "schema": "https://mcptest.dev/schema/execution-log/v1",
+  "recordedAt": "2025-12-28T17:34:20.680Z",
+  "metadata": {
+    "mcptestVersion": "0.5.0",
+    "dumpVersion": "https://developer.cisco.com/mcp_contract_dump/schema/0.3.1",
+    "dumpFile": "../chess-coach/mcpcontract/dumps/v0.7.0-dump.json",
+    "dumpChecksum": "sha256:279c448dae11694ed7f6fbdd065e65487e2d5410b41b96bd15bcbda531471529",
+    "serverInfo": {
+      "name": "chess-coach",
+      "version": "1.25.0"
+    },
+    "serverUrl": "stdio:///path/to/chess-coach/venv/bin/python?args=-m,chess_coach.mcp_server.server",
+    "transport": "stdio",
+    "previousVersions": []
+  },
+  "executions": [
+    {
+      "scenarioName": "list_strengths - basic test",
+      "toolName": "list_strengths",
+      "arguments": {
+        "status": "emerging",
+        "category": "tactical",
+        "time_control": "2024-01-01T00:00:00Z"
+      },
+      "response": {
+        "success": true,
+        "duration": 64,
+        "result": "Error executing list_strengths: type object 'StrengthTheme' has no attribute 'time_control'"
+      },
+      "timestamp": "2025-12-28T17:34:20.515Z",
+      "executionHash": "abd45c4c1e12b0fe72f38e4ac4fb46b585b1572ca61269ae05693206cfc18bc1"
+    }
+  ]
+}

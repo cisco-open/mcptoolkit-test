@@ -1,0 +1,48 @@
+{
+  "name": "@cisco-open/mcptoolkit-test",
+  "version": "1.0.0-rc1",
+  "description": "Automated testing framework for Model Context Protocol (MCP) servers",
+  "type": "module",
+  "bin": {
+    "mcptest": "./build/index.js"
+  },
+  "main": "./build/index.js",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "testing",
+    "contract-testing",
+    "integration-testing"
+  ],
+  "author": "Stève Sfartz",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/cisco-open/mcptoolkit-test#readme",
+  "bugs": {
+    "url": "https://github.com/cisco-open/mcptoolkit-test/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cisco-open/mcptoolkit-test.git"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "echo \"Linting not yet configured\" && exit 0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.27",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.1",
+    "ajv": "^8.17.1",
+    "commander": "^11.1.0",
+    "yaml": "^2.8.2"
+  }
+}

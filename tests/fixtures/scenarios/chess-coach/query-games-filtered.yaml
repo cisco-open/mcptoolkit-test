@@ -1,0 +1,12 @@
+name: "query_games - filter by result"
+description: "Verify filtering games by win/loss/draw"
+tools:
+  - name: "query_games"
+    arguments:
+      results: ["win"]
+      limit: 10
+    assertions:
+      - type: "response-type"
+        expected: "string"
+      - type: "contains-text"
+        expected: "Found"
