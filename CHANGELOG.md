@@ -7,12 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0-rc.2] - 2026-07-30
+
 ### Added
 
 - **Jest test suite**: Tier 1 unit tests covering the assertion engine, golden-file
   comparison/fuzzy matching, scenario loading/validation, mcpdesc loading, version
   validation, and scenario generation (48 tests). See
   [docs/maintainers/test-plan.md](docs/maintainers/test-plan.md).
+- **OIDC trusted publishing**: Switched CI publish workflow from long-lived
+  `NPM_TOKEN` to npm Trusted Publishers (OIDC). No secrets required; short-lived
+  tokens are generated per-run. Node bumped to 22.x (required by npm CLI ≥ 11.5.1);
+  npm cache removed from release builds per npm guidance; provenance attestations
+  are now generated automatically.
+- **Pre-release npm dist-tag support**: The publish workflow now stamps
+  `package.json` with the git tag version at publish time. Tags containing a
+  pre-release identifier (e.g. `v1.1.0-rc.2`) are published with `--tag next`,
+  leaving `latest` untouched for stable releases. Tagging `v1.1.0` promotes the
+  same code to `latest` without any `package.json` changes.
 
 ### Fixed
 
@@ -24,8 +36,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   break on regex-special characters.
 - **CI `jest: not found`**: Added `jest`, `ts-jest`, and `@types/jest` dev
   dependencies and a `jest.config.js` (ESM-aware) so `npm test` runs in CI.
+- **Security**: Resolved 5 npm audit vulnerabilities — 4 via `npm audit fix`
+  (`@hono/node-server`, `fast-uri`, `js-yaml`, `@modelcontextprotocol/sdk`) and 1
+  via a `brace-expansion` override in `package.json` to avoid a breaking Jest
+  downgrade.
 
-## [1.0.0-rc1] - 2026-06-25
+## [1.0.0-rc.1] - 2026-06-25
 
 ### Initial open-source release
 

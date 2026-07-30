@@ -25,7 +25,7 @@
     "url": "https://github.com/cisco-open/mcptoolkit-test.git"
   },
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22.14.0"
   },
   "scripts": {
     "build": "tsc",
