@@ -10,6 +10,7 @@ You may use `mcptest` for:
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Status: pre-release](https://img.shields.io/badge/status-1.0.0--rc.1-orange.svg)](CHANGELOG.md)
 [![Node.js: >=20.x](https://img.shields.io/badge/Node.js-%3E%3D20.x-brightgreen.svg)](https://nodejs.org/)
+[![mcpdesc](https://img.shields.io/endpoint?url=https://mcpdesc.org/badge/0.7.0.json)](https://mcpdesc.org)
 
 > **⚠️ Pre-release notice**: the mcptest CLI is functional but has seen limited real-world testing compared to other MCP Toolkit tools. Core workflows (generate, run, record) have been validated against the chess-coach example server; broader compatibility and edge cases are still being hardened. Feedback and bug reports are welcome.
 
