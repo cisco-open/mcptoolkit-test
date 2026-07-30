@@ -1,6 +1,6 @@
 {
-  "name": "@cisco-open/mcptoolkit-test",
-  "version": "1.0.0-rc1",
+  "name": "@cisco_open/mcptoolkit-test",
+  "version": "1.0.0",
   "description": "Automated testing framework for Model Context Protocol (MCP) servers",
   "type": "module",
   "bin": {
